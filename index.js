@@ -7,22 +7,22 @@ const expenseRoutes = require("./routes/expenseRoutes");
 
 const app = express();
 
-// Allow your React dev server
 app.use(cors({
   origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Handle preflight requests
-app.options("*", cors());
-
 app.use(express.json());
 
-app.get("/", (req, res) => res.json({ status: "OK", service: "Expense Tracker API" }));
+app.get("/", (req, res) =>
+  res.json({ status: "OK", service: "Expense Tracker API" })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);

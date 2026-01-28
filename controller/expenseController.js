@@ -42,7 +42,7 @@ function getExpenses(req, res) {
   const params = [userId];
 
   if (start) {
-    sql += " AND expense_date >= ?";
+    sql += " AND expense_date > ?";
     params.push(start);
   }
 
