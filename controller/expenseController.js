@@ -1,14 +1,32 @@
+
 const pool = require("../db/db");
+const path = require('path');
+
+
 
 function addExpense(req, res) {
+  console.log("---- ADD EXPENSE DEBUG ----");
+console.log("content-type:", req.headers["content-type"]);
+console.log("req.file:", req.file);
+console.log("req.body:", req.body);
+console.log("req.user:", req.user);
+console.log("---------------------------");
   const userId = req.user.id;
+  console.log(req.file);
+  
   const { title, amount, expense_date } = req.body;
 
-  if (!title || typeof amount !== "number" || !expense_date) {
+  if (!title || typeof parseInt(amount) !== "number" || !expense_date) {
     return res.status(400).json({
       message: "title, amount(number), expense_date required"
     });
   }
+
+  // if(file){
+  //   let sql=`INSERT INTO expenses (user_id, title, amount, expense_date,receipt)
+  //    VALUES (?, ?, ?, ? ,?)`
+  //    let param= [userId, title.trim(), amount, expense_date,receipt]
+  // }
 
   pool.query(
     `INSERT INTO expenses (user_id, title, amount, expense_date)
@@ -35,7 +53,7 @@ function getExpenses(req, res) {
   const { start, end } = req.query;
 
   let sql = `
-    SELECT id, title, amount, expense_date, created_at
+    SELECT id, title, amount, expense_date, created_at,receipt
     FROM expenses
     WHERE user_id = ?
   `;
@@ -51,7 +69,6 @@ function getExpenses(req, res) {
     params.push(end);
   }
 
-  // DESC order for expense cards
   sql += " ORDER BY expense_date DESC, id DESC";
 
   pool.query(sql, params, (err, rows) => {

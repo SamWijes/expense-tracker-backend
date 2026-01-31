@@ -6,7 +6,7 @@ const SALT_ROUNDS = 10;
 
 function register(req, res) {
   const { name, email, password } = req.body;
-
+  
   if (!name || !email || !password) {
     return res.status(400).json({ message: "name, email, password are required" });
   }
@@ -46,8 +46,10 @@ function register(req, res) {
     }
   );
 }
-
+/**@param {import('express').Request} req */
 function login(req, res) {
+  console.log("authcontrol",req.body);
+  
   const { email, password } = req.body;
 
   if (!email || !password) {

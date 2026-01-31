@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
+const uploadRoutes=require('./routes/uploadRoutes');
+const { upload_dir } = require("./controller/uploadController");
 
 const app = express();
 
@@ -21,8 +23,10 @@ app.get("/", (req, res) =>
 
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
+app.use("/api",uploadRoutes)
 
-const PORT = process.env.PORT || 4000;
+
+const PORT = process.env.PORT;
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
