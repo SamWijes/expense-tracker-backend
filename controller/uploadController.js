@@ -18,9 +18,10 @@ async function getImage(req,res) {
 
 
 const upload_dir=path.join(process.cwd(),"uploads")
+
 const upload=multer({
     storage:multer.diskStorage({
-        destination:upload_dir,
+        destination:"uploads",
         filename:(req,file,cb)=>{
             cb(null,file.fieldname+'-'+Date.now()+path.extname(file.originalname));
         }

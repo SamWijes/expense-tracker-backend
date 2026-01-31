@@ -6,7 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
 const uploadRoutes=require('./routes/uploadRoutes');
 const { upload_dir } = require("./controller/uploadController");
-
+const path = require('path');
 const app = express();
 
 app.use(cors({
@@ -24,8 +24,10 @@ app.get("/", (req, res) =>
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api",uploadRoutes)
+// const file=null
+// if (file) console.log("file");
 
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const PORT = process.env.PORT;
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)

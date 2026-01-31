@@ -5,33 +5,35 @@ const path = require('path');
 
 
 function addExpense(req, res) {
-  console.log("---- ADD EXPENSE DEBUG ----");
+//   console.log("---- ADD EXPENSE DEBUG ----");
 console.log("content-type:", req.headers["content-type"]);
-console.log("req.file:", req.file);
-console.log("req.body:", req.body);
-console.log("req.user:", req.user);
-console.log("---------------------------");
+// console.log("req.file:", req.file);
+// console.log("req.body:", req.body);
+// console.log("req.user:", req.user);
+// console.log("---------------------------");
   const userId = req.user.id;
-  console.log(req.file);
+  // console.log(req.file);
   
   const { title, amount, expense_date } = req.body;
+  const file=req.file;
 
   if (!title || typeof parseInt(amount) !== "number" || !expense_date) {
     return res.status(400).json({
       message: "title, amount(number), expense_date required"
     });
   }
-
-  // if(file){
-  //   let sql=`INSERT INTO expenses (user_id, title, amount, expense_date,receipt)
-  //    VALUES (?, ?, ?, ? ,?)`
-  //    let param= [userId, title.trim(), amount, expense_date,receipt]
-  // }
+  let sql=`INSERT INTO expenses (user_id, title, amount, expense_date)
+     VALUES (?, ?, ?, ?)`;
+  let qParam= [userId, title.trim(), amount, expense_date];
+  if(file){
+    sql=`INSERT INTO expenses (user_id, title, amount, expense_date,receipt)
+     VALUES (?, ?, ?, ? ,?)`
+    qParam.push(file.path)
+  }
 
   pool.query(
-    `INSERT INTO expenses (user_id, title, amount, expense_date)
-     VALUES (?, ?, ?, ?)`,
-    [userId, title.trim(), amount, expense_date],
+    sql,
+    qParam,
     (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
 
