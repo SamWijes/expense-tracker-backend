@@ -1,1 +1,5 @@
 /node_modules
+/new folder
+.env
+
+*.jpg
