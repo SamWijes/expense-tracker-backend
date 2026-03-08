@@ -48,9 +48,10 @@ function register(req, res) {
 }
 /**@param {import('express').Request} req */
 function login(req, res) {
-  console.log("authcontrol",req.body);
   
   const { email, password } = req.body;
+  console.log(req.body);
+  
 
   if (!email || !password) {
     return res.status(400).json({ message: "email and password are required" });
@@ -66,6 +67,8 @@ function login(req, res) {
       }
 
       const user = rows[0];
+      
+      
       const match = await bcrypt.compare(password, user.password_hash);
 
       if (!match) {
@@ -77,7 +80,8 @@ function login(req, res) {
         process.env.JWT_SECRET,
         { expiresIn: "7d" }
       );
-
+      
+      
       res.json({
         message: "Login successful",
         token,
